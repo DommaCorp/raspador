@@ -9,7 +9,7 @@ import json
 try:
     chave_api = st.secrets["GEMINI_API_KEY"]
     genai.configure(api_key=chave_api)
-    modelo_ia = genai.GenerativeModel('gemini-1.5-pro-latest')
+    modelo_ia = genai.GenerativeModel('gemini-2.0-flash')
 except KeyError:
     st.error("⚠️ Chave de API não encontrada. Configura a GEMINI_API_KEY nos Secrets do Streamlit.")
     st.stop()
@@ -126,3 +126,4 @@ if st.button("🧠 Gerar Análise Completa com IA", type="primary"):
     else:
 
         st.warning("⚠️ Atenção: Precisas de preencher o nome do produto e os 3 links para a IA funcionar corretamente.")
+
