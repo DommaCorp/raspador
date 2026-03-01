@@ -10,7 +10,7 @@ try:
     genai.configure(api_key=chave_api)
     
     # MUITO IMPORTANTE: Usar o modelo Flash, que tem limites muito maiores!
-    modelo_ia = genai.GenerativeModel('gemini-1.5-flash')
+    modelo_ia = genai.GenerativeModel('gemini-2.0-flash')
 except KeyError:
     st.error("⚠️ Chave de API não encontrada nos Secrets.")
     st.stop()
@@ -157,3 +157,4 @@ if st.button("🧠 Gerar Análise Completa com IA", type="primary"):
     else:
         # Novo aviso amigável
         st.warning("⚠️ Preenche o Nome do Produto e pelo menos o Link 1 para avançarmos.")
+
