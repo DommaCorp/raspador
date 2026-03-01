@@ -3,22 +3,39 @@ import google.generativeai as genai
 import json
 
 # =====================================================================
-# 1. CONFIGURAÇÃO DE SEGURANÇA E API
+# 1. CONFIGURAÇÃO DE SEGURANÇA E API (CÉREBRO AUTOMÁTICO 🧠)
 # =====================================================================
 try:
     chave_api = st.secrets["GEMINI_API_KEY"]
     genai.configure(api_key=chave_api)
     
-    # MUITO IMPORTANTE: Usar o modelo Flash, que tem limites muito maiores!
-    modelo_ia = genai.GenerativeModel('gemini-2.0-flash')
+    # Em vez de adivinhar a versão, o nosso programa procura o melhor modelo disponível!
+    modelo_escolhido = None
+    for m in genai.list_models():
+        if 'generateContent' in m.supported_generation_methods:
+            # Damos preferência à família "flash" (mais rápida e com maior limite gratuito)
+            if 'flash' in m.name:
+                # Remove a palavra "models/" do nome para evitar erros
+                modelo_escolhido = m.name.replace('models/', '')
+                break # Encontrou o modelo ideal, para de procurar!
+    
+    # Se por acaso não encontrar um Flash, usa o padrão seguro
+    if not modelo_escolhido:
+        modelo_escolhido = 'gemini-pro'
+
+    # Liga a Inteligência Artificial ao modelo que encontramos automaticamente
+    modelo_ia = genai.GenerativeModel(modelo_escolhido)
+
 except KeyError:
     st.error("⚠️ Chave de API não encontrada nos Secrets.")
     st.stop()
+except Exception as e:
+    st.error(f"⚠️ Erro ao ligar à Google: {e}")
+    st.stop()
 
 # =====================================================================
-# 2. A TUA INSTRUÇÃO ESTRATÉGICA (O CÉREBRO)
+# 2. A TUA INSTRUÇÃO ESTRATÉGICA (O PROMPT)
 # =====================================================================
-# Adicionei a regra das 20 palavras-chave e a nova estrutura JSON no final
 INSTRUCAO_IA = """
 És um analista de mercado especializado em e-commerce brasileiro.
 Realiza uma pesquisa aprofundada com base no produto informado e nos links fornecidos. 
@@ -121,24 +138,24 @@ with col2:
 
 if st.button("🧠 Gerar Análise Completa com IA", type="primary"):
     
-    # Validação: Agora só exige o Produto e o Link 1
     if produto and link1:
+        # Mostra qual modelo a IA escolheu automaticamente para termos certeza
+        st.caption(f"🔧 A usar o modelo automático: {modelo_escolhido}")
+        
         with st.spinner("A analisar o mercado e a categorizar palavras-chave..."):
             try:
-                # 1. Limpeza dos links: Guarda apenas os que o utilizador preencheu
+                # 1. Limpeza dos links vazios
                 todos_os_links = [link1, link2, link3, link4, link5, link6, link7, link8]
                 links_preenchidos = [link for link in todos_os_links if link != ""]
                 
-                # 2. Formata os links preenchidos como uma lista de texto (1. link..., 2. link...)
+                # 2. Formata para texto
                 texto_dos_links = "\n".join([f"{i+1}. {link}" for i, link in enumerate(links_preenchidos)])
                 
-                # 3. Junta tudo no prompt
+                # 3. Executa a IA
                 prompt_completo = f"{INSTRUCAO_IA}\n\nProduto: {produto}\nLinks Fornecidos:\n{texto_dos_links}"
-                
-                # Pede a resposta à IA
                 resposta = modelo_ia.generate_content(prompt_completo)
                 
-                # Limpa a resposta
+                # 4. Formata e mostra os dados
                 texto_limpo = resposta.text.replace('```json', '').replace('```', '').strip()
                 dados_json = json.loads(texto_limpo)
                 
@@ -151,10 +168,8 @@ if st.button("🧠 Gerar Análise Completa com IA", type="primary"):
             except Exception as erro:
                 mensagem_erro = str(erro)
                 if "429" in mensagem_erro or "quota" in mensagem_erro.lower():
-                    st.error("⏳ A tua Chave de API ainda está bloqueada por limite de quota. Confirma no Google AI Studio se o plano 'Pay-as-you-go' já está ativo e se criaste uma chave nova!")
+                    st.error("⏳ A tua Chave de API ainda está bloqueada por limite de quota. Confirma no Google AI Studio se o plano 'Pay-as-you-go' já está ativo e se criaste uma chave nova no projeto pago!")
                 else:
                     st.error(f"❌ Ocorreu um erro no servidor: {erro}")
     else:
-        # Novo aviso amigável
         st.warning("⚠️ Preenche o Nome do Produto e pelo menos o Link 1 para avançarmos.")
-
