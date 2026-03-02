@@ -31,25 +31,28 @@ except Exception as e:
 # =====================================================================
 # 2. A TUA INSTRUÇÃO ESTRATÉGICA (O PROMPT)
 # =====================================================================
-# Agora pedimos um RELATÓRIO em vez de um código JSON
+# Prompt atualizado com Neuromarketing Avançado, Arquétipos e restrições de Copy!
 INSTRUCAO_IA = """
-És um analista de mercado e copywriter especializado em e-commerce brasileiro.
+És um analista de mercado, especialista em neuromarketing e copywriter de e-commerce brasileiro.
 Realiza uma pesquisa aprofundada com base no produto informado e nos links fornecidos. 
-Aplica neurolinguística voltada para ativação do cérebro reptiliano (segurança, status, prazer, dor evitada, prova social). 
 
-A tua missão é entregar um relatório estratégico completo e detalhado, formatado de forma visualmente agradável em Markdown. 
-Usa títulos (##, ###), listas (*), negritos e emojis para facilitar a leitura.
+A tua missão é entregar um relatório estratégico completo, formatado de forma visualmente agradável em Markdown. 
+Podes usar emojis nos títulos das secções para organizar o relatório, MAS NUNCA uses emojis na secção de COPYWRITING.
 
 O teu relatório DEVE conter as seguintes secções:
 
 1. 📊 VISÃO GERAL DO MERCADO: Produto, preço médio estimado, nota geral e volume de avaliações.
 2. 🗺️ MAPA COMPETITIVO: Principais concorrentes, os seus preços, diferenciais e falhas.
 3. 🗣️ VOZ DO CLIENTE (Avaliações): Sentimento geral, maiores elogios e piores reclamações.
-4. 🎯 PÚBLICO-ALVO E PERSONA: Perfil demográfico, psicográfico, frustrações e desejos profundos.
-5. 🧠 NEUROLINGUÍSTICA E OBJEÇÕES: Palavras que ativam a compra, palavras a evitar e quebra das principais objeções.
-6. 📈 ANÁLISE SWOT: Forças, Fraquezas, Oportunidades e Ameaças do produto e das avaliações.
-7. 🔑 PALAVRAS-CHAVE SEO: Cria uma tabela ou lista com até 20 palavras-chave essenciais. Classifica-as como "Cauda Curta" ou "Cauda Longa" e organiza-as da mais barata para a mais cara em custo de anúncio.
-8. ✍️ COPYWRITING: Uma sugestão de descrição otimizada para o Mercado Livre e 5 sugestões de títulos matadores.
+4. 🎯 PÚBLICO-ALVO, PERSONA E ARQUÉTIPO: Perfil demográfico, psicográfico, frustrações e desejos profundos. Identifica o ARQUÉTIPO DO COMPRADOR principal e explica o seu padrão de comportamento.
+5. 🧠 NEURO VENDAS E OBJEÇÕES: Usa o Arquétipo identificado para aplicar uma estrutura de neuro venda. Explica como vender diretamente para o cérebro reptiliano deste comprador (segurança, status, prazer, dor evitada). Inclui palavras que ativam a compra e a quebra das principais objeções.
+6. 📈 ANÁLISE SWOT: Forças, Fraquezas, Oportunidades e Ameaças do produto.
+7. 🔑 PALAVRAS-CHAVE E BRANDING ADS: 
+   - SEO / Fundo de Funil: Tabela com até 20 palavras-chave essenciais, classificadas como "Cauda Curta" ou "Cauda Longa". Organiza-as em ordem crescente de custo usando APENAS os termos: "Custo Baixo", "Custo Médio", "Custo Alto" ou "Custo Muito Alto" (não uses valores monetários).
+   - Branding Ads / Topo de Funil: Lista de palavras e termos recomendados para usar em campanhas de reconhecimento de marca.
+8. ✍️ COPYWRITING: 
+   - Descrição (Copy): Cria uma descrição otimizada, focada em conversão. REGRA ESTRITA: NÃO uses emojis nesta descrição.
+   - Títulos Matadores: 5 sugestões de títulos. REGRAS ESTRITAS: Cada título deve ter NO MÁXIMO 60 caracteres. NÃO uses emojis. É ESTRITAMENTE PROIBIDO usar as palavras "Full", "brinde", "promoção", "ultimas unidades", "acabando" ou quaisquer sinónimos de escassez barata.
 
 Gera apenas o relatório final, sem introduções desnecessárias.
 """
@@ -83,7 +86,7 @@ if st.button("🧠 Gerar Análise Completa com IA", type="primary"):
     if produto and link1:
         st.caption(f"🔧 A usar o modelo automático: {modelo_escolhido}")
         
-        with st.spinner("A analisar o mercado, a estruturar o relatório e a categorizar palavras-chave... (Isto pode demorar cerca de 1 minuto)"):
+        with st.spinner("A analisar arquétipos, neuro vendas e a estruturar o relatório... (Isto pode demorar cerca de 1 minuto)"):
             try:
                 # 1. Limpeza dos links vazios
                 todos_os_links = [link1, link2, link3, link4, link5, link6, link7, link8]
@@ -92,7 +95,7 @@ if st.button("🧠 Gerar Análise Completa com IA", type="primary"):
                 # 2. Formata para texto
                 texto_dos_links = "\n".join([f"{i+1}. {link}" for i, link in enumerate(links_preenchidos)])
                 
-                # 3. Executa a IA (Agora de forma simples, sem forçar JSON!)
+                # 3. Executa a IA
                 prompt_completo = f"{INSTRUCAO_IA}\n\nProduto: {produto}\nLinks Fornecidos:\n{texto_dos_links}"
                 resposta = modelo_ia.generate_content(prompt_completo)
                 
