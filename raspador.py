@@ -52,7 +52,9 @@ O teu relatório DEVE conter as seguintes secções:
    - Branding Ads / Topo de Funil: Lista de palavras e termos recomendados para usar em campanhas de reconhecimento de marca.
 8. ✍️ COPYWRITING: 
    - Descrição (Copy): Cria uma descrição otimizada, focada em conversão. REGRA ESTRITA: NÃO uses emojis nesta descrição.
-   - Títulos Matadores: 5 sugestões de títulos. REGRAS ESTRITAS: Cada título deve ter NO MÁXIMO 60 caracteres. NÃO uses emojis. É ESTRITAMENTE PROIBIDO usar as palavras "Full", "brinde", "promoção", "ultimas unidades", "acabando" ou quaisquer sinónimos de escassez barata.
+   - Títulos Matadores: 5 sugestões de títulos criativos focados em conversão.
+   - Títulos Estruturados (SEO): Fornece mais 5 sugestões de títulos baseados nas palavras-chave da busca, seguindo RIGOROSAMENTE a seguinte fórmula estrutural: "Produto + Marca + Linha ou Modelo + Caracteristica Principal + Variação relevante".
+   - REGRAS ESTRITAS PARA TODOS OS TÍTULOS: Cada título deve ter NO MÁXIMO 60 caracteres. NÃO uses emojis. É ESTRITAMENTE PROIBIDO usar as palavras "Full", "brinde", "promoção", "ultimas unidades", "acabando" ou quaisquer sinónimos de escassez barata.
 
 Gera apenas o relatório final, sem introduções desnecessárias.
 """
